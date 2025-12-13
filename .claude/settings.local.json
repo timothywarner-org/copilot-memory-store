@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm run dev:*)",
+      "Bash(printf:*)",
+      "Bash(ls:*)",
+      "Bash(dir /b \"c:\\github\\copilot-memory-store\\*.md\")",
+      "Bash(pushd:*)",
+      "Bash(popd)"
+    ]
+  }
+}

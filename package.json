@@ -1,0 +1,30 @@
+{
+  "name": "copilot-memory-store",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Local JSON memory store with CLI + MCP server for GitHub Copilot / MCP clients.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "start": "tsx src/cli.ts",
+    "mcp": "tsx src/mcp-server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start:dist": "node dist/cli.js",
+    "mcp:dist": "node dist/mcp-server.js",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/mcp-server.js",
+    "inspect:dev": "npx @modelcontextprotocol/inspector tsx src/mcp-server.ts",
+    "clean": "node -e \"import('fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.24.0",
+    "dotenv": "^16.4.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.17.5",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

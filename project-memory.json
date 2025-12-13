@@ -1,0 +1,21 @@
+[
+  {
+    "id": "m_20251213T221842903Z_c28078",
+    "text": "This is my first memory!",
+    "tags": [
+      "test",
+      "demo"
+    ],
+    "createdAt": "2025-12-13T22:18:42.903Z",
+    "updatedAt": "2025-12-13T22:18:42.903Z",
+    "deletedAt": null
+  },
+  {
+    "id": "m_20251213T221853982Z_c7ccdd",
+    "text": "I prefer Node over Python",
+    "tags": [],
+    "createdAt": "2025-12-13T22:18:53.982Z",
+    "updatedAt": "2025-12-13T22:18:53.982Z",
+    "deletedAt": null
+  }
+]
