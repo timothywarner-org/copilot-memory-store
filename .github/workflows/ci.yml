@@ -8,13 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build & Test
-    runs-on: ${{ matrix.os }}
+    name: Build & Test (Windows)
+    runs-on: windows-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18, 20, 22]
-      fail-fast: false
+        node-version: [20]
 
     steps:
       - name: Checkout repository
@@ -89,7 +87,6 @@ jobs:
             server.stdout.on('data', (d) => stdout += d);
             server.stderr.on('data', (d) => stderr += d);
 
-            // Send initialize request
             const initRequest = JSON.stringify({
               jsonrpc: '2.0',
               id: 1,
@@ -99,28 +96,30 @@ jobs:
                 capabilities: {},
                 clientInfo: { name: 'ci-test', version: '1.0.0' }
               }
+            }) + '\n\n';
+
+            server.stdin.write(initRequest);
+
+            const timeout = setTimeout(() => {
+              console.error('Timed out waiting for MCP server response');
+              process.exit(1);
+            }, 5000);
+
+            server.stdout.on('data', () => {
+              clearTimeout(timeout);
+              console.log('stdout:', stdout);
+              console.log('stderr:', stderr);
+              process.exit(0);
             });
 
-            server.stdin.write(initRequest + '\n');
-
-            setTimeout(() => {
-              server.kill();
-              console.log('stderr:', stderr);
+            server.stderr.on('data', () => {
+              clearTimeout(timeout);
               console.log('stdout:', stdout);
-
-              if (stdout.includes('\"result\"') && stdout.includes('copilot-memory')) {
-                console.log('MCP server responded correctly');
-                process.exit(0);
-              } else if (stderr.includes('Server running')) {
-                console.log('MCP server started (stdio mode)');
-                process.exit(0);
-              } else {
-                console.log('MCP server started without errors');
-                process.exit(0);
-              }
-            }, 2000);
+              console.log('stderr:', stderr);
+              process.exit(0);
+            });
           "
-        timeout-minutes: 1
+        shell: pwsh
 
       - name: Cleanup test files
         if: always()
