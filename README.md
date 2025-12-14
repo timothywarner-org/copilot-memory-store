@@ -170,7 +170,7 @@ The inspector lets you:
 
 ## CLI Commands
 
-See [CLI_GUIDE.md](CLI_GUIDE.md) for detailed usage and examples.
+See [docs/CLI_GUIDE.md](docs/CLI_GUIDE.md) for detailed usage and examples.
 
 | Command | Description |
 |---------|-------------|
@@ -199,6 +199,9 @@ The `memory_compress` tool demonstrates key context engineering concepts:
     └── memory.agent.md   # Custom VS Code agent
 .vscode/
 └── mcp.json              # MCP server configuration
+docs/
+├── CLI_GUIDE.md          # CLI usage guide
+└── COPILOT_GUIDE.md      # VS Code Copilot usage guide
 src/
 ├── cli.ts                # Interactive REPL
 ├── mcp-server.ts         # MCP stdio server (tools, resources, prompts)
