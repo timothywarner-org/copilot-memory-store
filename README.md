@@ -1,6 +1,12 @@
 # Copilot Memory Store
 
-![Context Engineering for LLMs](images/social-preview.png)
+<p align="center">
+  <img src="images/social-preview.png" alt="Context Engineering for LLMs" style="max-width: 520px; width: 100%; height: auto; display: block; margin: 0 auto;" />
+</p>
+
+[![CI](https://github.com/timothywarner-org/copilot-memory-store/actions/workflows/ci.yml/badge.svg)](https://github.com/timothywarner-org/copilot-memory-store/actions/workflows/ci.yml)
+[![Release](https://github.com/timothywarner-org/copilot-memory-store/actions/workflows/release.yml/badge.svg)](https://github.com/timothywarner-org/copilot-memory-store/actions/workflows/release.yml)
+[![Contact TechTrainerTim.com](https://img.shields.io/badge/Visit%20TechTrainerTim.com-Contact%20Tim-0057B7?style=for-the-badge&logo=google-chrome&logoColor=white)](https://techtrainertim.com)
 
 A **local JSON memory store** for context engineering with GitHub Copilot and MCP clients.
 
