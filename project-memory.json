@@ -17,5 +17,16 @@
     "createdAt": "2025-12-13T22:18:53.982Z",
     "updatedAt": "2025-12-13T22:18:53.982Z",
     "deletedAt": null
+  },
+  {
+    "id": "m_20251214T000000000Z_a1b2c3",
+    "text": "I'm red/green colorblind, so please use colorblind-friendly color choices.",
+    "tags": [
+      "preference",
+      "accessibility"
+    ],
+    "createdAt": "2025-12-14T00:00:00.000Z",
+    "updatedAt": "2025-12-14T00:00:00.000Z",
+    "deletedAt": null
   }
 ]

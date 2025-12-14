@@ -54,7 +54,7 @@ const server = new McpServer({ name: "copilot-memory-store", version: "0.2.0" })
  */
 server.tool(
   "memory_write",
-  "Append a memory record to the local JSON memory file.",
+  "Add, save, store, or remember information to the project memory. Use this when the user wants to remember something, save a preference, store a decision, or add a note for later. Keywords: add, save, store, remember, note, record, keep.",
   {
     text: z.string().describe("Memory text to store."),
     tags: z.array(z.string()).optional().describe("Optional tags.")
@@ -74,7 +74,7 @@ server.tool(
  */
 server.tool(
   "memory_search",
-  "Search active memories by keyword query. Returns prettified markdown for chat context.",
+  "Search, find, recall, or look up information from project memory. Use this when the user asks what they stored, wants to find a memory, recall a decision, look up preferences, or asks 'what do I have about X'. Keywords: search, find, recall, lookup, what, show, list, get.",
   {
     query: z.string().describe("Search query."),
     limit: z.number().min(1).max(50).default(10).describe("Max results (1-50, default 10)."),

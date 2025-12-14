@@ -1,47 +1,91 @@
-# Copilot Memory Store - Custom Instructions
+# Copilot Memory Store - Usage Guide
 
-Add these triggers to your GitHub Copilot custom instructions to enable memory features.
+This guide explains how to use the memory tools effectively with GitHub Copilot in VS Code.
 
-## Trigger Phrases
+## Quick Start: Use the Memory Agent
 
-Use these deterministic triggers in your prompts:
+The easiest way to use memory tools is with the pre-configured **Memory agent**:
 
-| Trigger | Action |
-|---------|--------|
-| `remember: <text>` | Call `memory_write` to store the text |
-| `recall: <query>` | Call `memory_search` and use results to answer |
-| `inject: <query>` | Call `memory_compress` and include the markdown context |
+1. Open Copilot Chat in VS Code
+2. Click the agent dropdown (top of chat panel)
+3. Select **"Memory"**
+4. Chat naturally!
 
-## Example Custom Instructions
+The Memory agent automatically:
 
-Copy this to your Copilot custom instructions:
+- Saves preferences, decisions, and context when you mention them
+- Searches memory before starting tasks
+- Uses meaningful tags for organization
 
-```
-## Memory Tools
+## Natural Language Examples
 
-When the user's message contains these triggers, use the copilot-memory MCP tools:
+With the Memory agent selected, just talk naturally:
 
-- "remember:" → Call memory_write with the text after the trigger
-- "recall:" → Call memory_search with the query, then answer using the results
-- "inject:" → Call memory_compress with the query, then include the markdown in your response
+### Saving Memories
 
-### Examples
-
-User: "remember: I prefer functional programming over OOP"
-→ Call memory_write(text: "I prefer functional programming over OOP")
-
-User: "recall: what are my coding preferences?"
-→ Call memory_search(query: "coding preferences"), then summarize the hits
-
-User: "inject: typescript patterns" then help me refactor this code
-→ Call memory_compress(query: "typescript patterns", budget: 1200), include the context, then help with the refactor
-
-Do not call memory tools unless the user uses these triggers or explicitly asks.
+```text
+"Remember that I prefer functional components over class components"
+"Save a note that we're using PostgreSQL for the database"
+"Store this decision: we chose JWT for authentication"
+"Note that our API uses kebab-case for endpoints"
 ```
 
-## MCP Resources
+### Searching Memories
 
-The server exposes resources that clients can fetch for context:
+```text
+"What preferences do I have saved?"
+"Find my notes about the database"
+"What did we decide about authentication?"
+"Show me everything about React patterns"
+```
+
+### Using Memory for Context
+
+```text
+"Help me refactor auth.ts" → Agent searches memory first
+"Review this PR" → Agent checks for relevant coding standards
+"What testing approach should I use?" → Agent recalls your preferences
+```
+
+## Direct Tool References
+
+You can also reference tools directly with `#` prefix:
+
+```text
+#memory_write text: "We use Tailwind CSS" tags: ["stack", "styling"]
+#memory_search query: "styling"
+#memory_compress query: "architecture" budget: 1000
+```
+
+## Available Tools
+
+| Tool | Description | When to Use |
+|------|-------------|-------------|
+| `memory_write` | Store information | "remember", "save", "store", "note" |
+| `memory_search` | Find information | "what", "find", "recall", "show" |
+| `memory_compress` | Get compact context | Need context for complex tasks |
+| `memory_delete` | Soft-delete | "forget", "remove" |
+| `memory_purge` | Permanently delete | Clean up old/wrong memories |
+| `memory_export` | Export all data | Backup or review all memories |
+
+## Recommended Tags
+
+Use consistent tags for better organization:
+
+| Tag | Use For |
+|-----|---------|
+| `preference` | Coding style preferences |
+| `decision` | Architectural decisions |
+| `pattern` | Design patterns to follow |
+| `antipattern` | Things to avoid |
+| `stack` | Technology choices |
+| `convention` | Team/project conventions |
+| `context` | Project-specific information |
+| `todo` | Things to remember for later |
+
+## MCP Resources (Read-Only)
+
+The server also exposes resources that provide live data:
 
 | Resource | URI | Description |
 |----------|-----|-------------|
@@ -50,48 +94,86 @@ The server exposes resources that clients can fetch for context:
 
 ## MCP Prompts
 
-Pre-built prompt templates available:
+> **Note:** VS Code GitHub Copilot does not currently support MCP prompts. These work with the MCP Inspector and other MCP clients.
 
-| Prompt | Args | Description |
-|--------|------|-------------|
-| `summarize-memories` | `topic` | Summarize memories on a topic |
-| `remember-decision` | `title`, `context`, `decision`, `consequences?` | Capture architectural decisions |
-| `inject-context` | `task`, `budget?` | Auto-inject relevant context for a task |
+| Prompt | Description |
+|--------|-------------|
+| `summarize-memories` | Summarize memories on a topic |
+| `remember-decision` | Template for architectural decisions (ADR format) |
+| `inject-context` | Auto-inject relevant context for a task |
 
-## Advanced Usage
+## Tips for Effective Memory Use
 
-### Tag-based Organization
+### 1. Be Specific
 
-```
-remember: [tags: react, patterns] Always use custom hooks for shared state logic
-```
-
-### Budget Control for Context Injection
-
-```
-inject: (budget: 800) authentication flow
+```text
+Bad:  "Remember that thing about the database"
+Good: "Remember that we use PostgreSQL with Prisma ORM"
 ```
 
-### LLM-Assisted Compression
+### 2. Use Tags Consistently
 
-When you have many memories and need smarter summarization:
-
-```
-inject: (llm: true) project architecture decisions
-```
-
-### Raw JSON Output
-
-For programmatic use, request raw JSON instead of formatted markdown:
-
-```
-recall: (raw: true) database schemas
+```text
+Bad:  "Remember [pref] I like tabs"
+Good: "Remember that I prefer tabs over spaces" (agent adds tags)
 ```
 
-## Best Practices
+### 3. Keep Memories Atomic
 
-1. **Be specific with tags** - Use consistent tags like `preference`, `pattern`, `decision`, `architecture`
-2. **Keep memories atomic** - One concept per memory for better search relevance
-3. **Use descriptive text** - Include keywords that you'll search for later
-4. **Purge outdated info** - Remove memories that are no longer accurate
-5. **Use prompts for structure** - The `remember-decision` prompt ensures consistent ADR format
+```text
+Bad:  "Remember we use React, TypeScript, Jest, and PostgreSQL"
+Good:
+  "Remember we use React 18 for the frontend"
+  "Remember we use TypeScript in strict mode"
+  "Remember we use Jest for unit testing"
+```
+
+### 4. Clean Up Outdated Info
+
+When decisions change:
+
+```text
+"Forget the old database decision"
+"Remember that we switched from MySQL to PostgreSQL"
+```
+
+### 5. Search Before Starting Tasks
+
+The Memory agent does this automatically, but you can be explicit:
+
+```text
+"Check my memories about auth patterns, then help me implement login"
+```
+
+## Troubleshooting
+
+### Tools Not Working?
+
+1. **Build the project:** `npm run build`
+2. **Reload VS Code:** `Ctrl+Shift+P` → "Developer: Reload Window"
+3. **Check agent is selected:** Make sure "Memory" agent is active
+
+### Natural Language Not Triggering Tools?
+
+- Make sure you're using the **Memory** agent (not Ask or default Agent)
+- Try being more explicit: "Search my memories for X"
+- Fall back to direct tool reference: `#memory_search query: "X"`
+
+### MCP Server Not Connecting?
+
+Check `.vscode/mcp.json` exists and points to the built server:
+
+```json
+{
+  "servers": {
+    "copilot-memory": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["./dist/mcp-server.js"],
+      "env": {
+        "MEMORY_PATH": "project-memory.json"
+      }
+    }
+  }
+}
+```

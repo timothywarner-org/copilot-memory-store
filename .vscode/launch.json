@@ -1,0 +1,79 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CLI (TypeScript via tsx)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--loader",
+        "tsx",
+        "--enable-source-maps",
+        "--nolazy"
+      ],
+      "args": [
+        "${workspaceFolder}/src/cli.ts"
+      ],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "CLI (Built dist/cli.js)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/dist/cli.js",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "preLaunchTask": "npm: build",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
+    },
+    {
+      "name": "MCP Server (TypeScript via tsx)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--loader",
+        "tsx",
+        "--enable-source-maps",
+        "--nolazy"
+      ],
+      "args": [
+        "${workspaceFolder}/src/mcp-server.ts"
+      ],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "MEMORY_PATH": "project-memory.json"
+      },
+      "sourceMaps": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Build & Debug CLI",
+      "configurations": [
+        "CLI (Built dist/cli.js)"
+      ]
+    }
+  ]
+}

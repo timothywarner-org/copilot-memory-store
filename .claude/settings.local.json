@@ -8,7 +8,14 @@
       "Bash(ls:*)",
       "Bash(dir /b \"c:\\github\\copilot-memory-store\\*.md\")",
       "Bash(pushd:*)",
-      "Bash(popd)"
+      "Bash(popd)",
+      "Bash(gh auth:*)",
+      "Bash(git -C \"c:/github/copilot-memory-store\" status)",
+      "Bash(git -C \"c:/github/copilot-memory-store\" remote -v:*)",
+      "Bash(gh repo edit:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh label create:*)",
+      "Bash(gh label list:*)"
     ]
   }
 }
