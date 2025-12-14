@@ -1,6 +1,16 @@
 # Copilot Memory Store
 
+![Context Engineering for LLMs](images/social-preview.png)
+
 A **local JSON memory store** for context engineering with GitHub Copilot and MCP clients.
+
+## Documentation
+
+| Guide | When to read |
+|-------|--------------|
+| [docs/CODE_WALKTHROUGH.md](docs/CODE_WALKTHROUGH.md) | Architectural overview with flow diagrams |
+| [docs/CLI_GUIDE.md](docs/CLI_GUIDE.md) | Interactive REPL command reference |
+| [docs/COPILOT_GUIDE.md](docs/COPILOT_GUIDE.md) | Using the memory tools from GitHub Copilot |
 
 ## Features
 
@@ -26,7 +36,7 @@ Perfect for teaching **context engineering** - the art of fitting the right info
 # Install dependencies
 npm install
 
-# Copy environment config
+# Copy environment config (tweak MEMORY_PATH / DeepSeek settings as needed)
 cp .env.example .env
 
 # Build the project
@@ -37,7 +47,11 @@ npm run dev
 
 # Or run the MCP server
 npm run mcp
+
+# Debug presets live in `.vscode/launch.json` (Run → Start Debugging → pick a config)
 ```
+
+> **Heads-up:** `project-memory.json` contains a few demo memories for workshops. Delete it (or point `MEMORY_PATH` elsewhere) before your first real run if you want to start with an empty store.
 
 ## VS Code GitHub Copilot Integration
 
@@ -66,9 +80,11 @@ The project includes a pre-configured `.vscode/mcp.json`:
 }
 ```
 
+Run `npm run build` whenever you change the server so the compiled `dist/mcp-server.js` stays current.
+
 ### 3. Use the Memory Agent (Recommended)
 
-The project includes a custom **Memory agent** at `.github/agents/memory.agent.md` that makes using the memory tools natural.
+The project includes a custom **Memory agent** at `.github/agents/memory-agent.agent.md` that makes using the memory tools natural.
 
 **To use:**
 
@@ -142,13 +158,15 @@ Edit `.env`:
 
 ```env
 # Required: where memories are stored
-MEMORY_PATH=project-memory.json
+MEMORY_PATH=.copilot-memory.json
 
 # Optional: for LLM-assisted compression
 DEEPSEEK_API_KEY=your-key-here
 DEEPSEEK_BASE_URL=https://api.deepseek.com
 DEEPSEEK_MODEL=deepseek-chat
 ```
+
+The MCP configuration in `.vscode/mcp.json` points at `project-memory.json` so you can ship a pre-filled sample store. Override `MEMORY_PATH` in your environment if you want the CLI and MCP server to share a different file.
 
 ## MCP Inspector
 
@@ -195,11 +213,15 @@ The `memory_compress` tool demonstrates key context engineering concepts:
 
 ```text
 .github/
-└── agents/
-    └── memory.agent.md   # Custom VS Code agent
+├── agents/
+│   └── memory-agent.agent.md  # Custom VS Code agent definition
+└── copilot-instructions.md    # Onboarding for AI coding agents
 .vscode/
-└── mcp.json              # MCP server configuration
+├── launch.json
+├── mcp.json
+└── settings.json
 docs/
+├── CODE_WALKTHROUGH.md   # Architecture walkthrough + diagrams
 ├── CLI_GUIDE.md          # CLI usage guide
 └── COPILOT_GUIDE.md      # VS Code Copilot usage guide
 src/
@@ -219,6 +241,15 @@ src/
 | `npm run inspect` | Launch MCP Inspector |
 | `npm run inspect:dev` | Inspector with tsx (live reload) |
 
+## Development Workflow
+
+| Task | Recommended action |
+|------|--------------------|
+| Edit + run CLI locally | `npm run dev` or VS Code "CLI (TypeScript via tsx)" debug config |
+| Serve MCP tools to Copilot | `npm run mcp` during development; rebuild with `npm run build` for the dist-based config |
+| Explore MCP surface area | `npm run inspect` or `npm run inspect:dev` |
+| Update docs/instructions | Keep [docs/](docs) and [.github/copilot-instructions.md](.github/copilot-instructions.md) in sync |
+
 ## External Resources
 
 - [VS Code Custom Agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
@@ -226,6 +257,17 @@ src/
 - [MCP Specification](https://modelcontextprotocol.io/specification/)
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - [MCP Inspector](https://github.com/modelcontextprotocol/inspector)
+
+## Author
+
+**Tim Warner**
+
+- [Website](https://techtrainertim.com)
+- [GitHub](https://github.com/timothywarner)
+- [LinkedIn](https://www.linkedin.com/in/timothywarner/)
+- [YouTube](https://www.youtube.com/channel/UCim7PFtynyPuzMHtbNyYOXA)
+- [Bluesky](https://bsky.app/profile/techtrainertim.bsky.social)
+- [Mastodon](https://mastodon.social/@techtrainertim)
 
 ## License
 

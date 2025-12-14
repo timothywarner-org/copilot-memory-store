@@ -4,7 +4,7 @@ This guide explains how to use the memory tools effectively with GitHub Copilot 
 
 ## Quick Start: Use the Memory Agent
 
-The easiest way to use memory tools is with the pre-configured **Memory agent**:
+The easiest way to use memory tools is with the pre-configured **Memory agent** (definition lives in `.github/agents/memory-agent.agent.md`):
 
 1. Open Copilot Chat in VS Code
 2. Click the agent dropdown (top of chat panel)
