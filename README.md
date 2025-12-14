@@ -8,6 +8,7 @@ A **local JSON memory store** for context engineering with GitHub Copilot and MC
 
 | Guide | When to read |
 |-------|--------------|
+| [docs/CONTEXT_MEMORY_TYPES.md](docs/CONTEXT_MEMORY_TYPES.md) | Deep dive into LLM memory types and how this project works |
 | [docs/CODE_WALKTHROUGH.md](docs/CODE_WALKTHROUGH.md) | Architectural overview with flow diagrams |
 | [docs/CLI_GUIDE.md](docs/CLI_GUIDE.md) | Interactive REPL command reference |
 | [docs/COPILOT_GUIDE.md](docs/COPILOT_GUIDE.md) | Using the memory tools from GitHub Copilot |
