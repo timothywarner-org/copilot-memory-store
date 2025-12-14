@@ -51,3 +51,9 @@ Thumbs.db
 !.vscode/mcp.json
 !.vscode/launch.json
 !.vscode/settings.json
+
+############################
+# Claude Code local files
+############################
+.claude/
+CLAUDE.md
