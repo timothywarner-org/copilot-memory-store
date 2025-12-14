@@ -1,0 +1,27 @@
+name: Markdownlint Fixup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install markdownlint-cli2
+        run: npm install --no-save markdownlint-cli2
+
+      - name: Run markdownlint fix
+        run: npx markdownlint-cli2-fix "**/*.md" "#node_modules" "#dist"
+
+      - name: Show git diff
+        run: git status --short && git diff
+*** End Patch
