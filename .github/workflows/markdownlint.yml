@@ -24,4 +24,3 @@ jobs:
 
       - name: Show git diff
         run: git status --short && git diff
-*** End Patch
