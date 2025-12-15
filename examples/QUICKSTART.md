@@ -109,15 +109,27 @@ purge --match "old pattern"
 2. Browser opens to `http://localhost:5173`
 3. Click **"Connect"** button
 4. Left sidebar shows:
-   - **Tools (6):** memory_write, memory_search, memory_compress, etc.
+   - **Tools (7):** memory_write, memory_search, memory_compress, inject_context, etc.
    - **Resources (2):** memory://stats, memory://recent
    - **Prompts (3):** summarize-memories, remember-decision, inject-context
 5. Click any tool → fill in parameters → click **"Execute"**
 6. See JSON-RPC request/response in the traffic panel
 
-### Test inject-context with shaping
+### Test inject_context tool (recommended)
 
 In the Inspector:
+
+1. Click **Tools** → **inject_context**
+2. Fill in:
+   - `task`: "refactor the authentication module"
+   - `budget`: 1500
+3. Click **"Execute"**
+4. See the AI-shaped context output (uses DeepSeek if configured)
+
+### Alternative: Test inject-context prompt
+
+In the Inspector:
+
 1. Click **Prompts** → **inject-context**
 2. Fill in:
    - `task`: "refactor the authentication module"

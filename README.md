@@ -133,7 +133,7 @@ After any configuration changes, reload VS Code:
 
 ## MCP Server Features
 
-### Tools (6)
+### Tools (7)
 
 | Tool | Description |
 |------|-------------|
@@ -143,6 +143,7 @@ After any configuration changes, reload VS Code:
 | `memory_delete` | Soft-delete a memory (tombstone, recoverable) |
 | `memory_purge` | Hard-delete by id, tag, or substring match |
 | `memory_export` | Export all records as JSON |
+| `inject_context` | **Auto-inject shaped context for a task** (uses DeepSeek LLM) |
 
 ### Resources (2)
 

@@ -4,13 +4,14 @@
  * Exposes memory operations as MCP tools, resources, and prompts for use
  * with GitHub Copilot (Agent mode) or any MCP-compatible client.
  *
- * ## Tools (6)
+ * ## Tools (7)
  * - memory_write: Add a memory
  * - memory_search: Search with relevance scoring
  * - memory_compress: Budget-constrained context compression
  * - memory_delete: Soft-delete (tombstone)
  * - memory_purge: Hard-delete by criteria
  * - memory_export: Export raw JSON
+ * - inject_context: Auto-inject shaped context for a task (uses DeepSeek LLM)
  *
  * ## Resources (2)
  * - memory://stats: Live statistics
@@ -187,6 +188,79 @@ server.tool(
     const loaded = loadStore();
     const raw = exportJson(loaded.records);
     return { content: [{ type: "text", text: raw }] };
+  }
+);
+
+/**
+ * Tool: inject_context
+ * Automatically injects relevant memories as shaped context for a task.
+ *
+ * This tool is designed for autonomous use by LLMs. When starting a coding task,
+ * the LLM can call this tool to retrieve relevant project context (decisions,
+ * preferences, patterns, constraints) shaped specifically for the task at hand.
+ *
+ * Uses DeepSeek LLM to intelligently transform raw memories into actionable
+ * guidance. Falls back to deterministic compression if DeepSeek is not configured.
+ *
+ * @returns Markdown context block optimized for the given task
+ */
+server.tool(
+  "inject_context",
+  "Inject relevant project context for a coding task. Call this BEFORE starting work to retrieve decisions, preferences, and constraints relevant to the task. Uses AI to shape context into actionable guidance. Keywords: context, inject, before, start, relevant, decisions, preferences, constraints.",
+  {
+    task: z.string().describe("The coding task you are about to work on (be specific for better context matching)."),
+    budget: z.number().min(200).max(8000).default(1500).describe("Character budget for context (200-8000, default 1500)."),
+    limit: z.number().min(1).max(50).default(25).describe("Max memories to consider (1-50, default 25).")
+  },
+  async (args) => {
+    const task = String(args.task ?? "").trim();
+    if (!task) {
+      return {
+        content: [{ type: "text", text: "Error: task parameter is required. Describe what you're about to work on." }],
+        isError: true
+      };
+    }
+
+    const budget = Number.isFinite(args.budget) ? Number(args.budget) : 1500;
+    const limit = Number.isFinite(args.limit) ? Number(args.limit) : 25;
+
+    const loaded = loadStore();
+    const compressed = compressDeterministic({ records: loaded.records, query: task, budget, limit });
+
+    // Check if we have any relevant memories
+    const memoryCount = compressed.included.length;
+    if (memoryCount === 0) {
+      return {
+        content: [{
+          type: "text",
+          text: `## No Relevant Context Found\n\nNo stored memories matched the task: "${task}"\n\nProceed with your best judgment, and consider using \`memory_write\` to store relevant decisions for future reference.`
+        }]
+      };
+    }
+
+    let contextBlock = compressed.markdown;
+    let shapingMethod = "deterministic";
+
+    // Attempt DeepSeek shaping for intelligent context transformation
+    const apiKey = (process.env.DEEPSEEK_API_KEY || "").trim();
+    if (apiKey) {
+      const baseUrl = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").trim();
+      const model = (process.env.DEEPSEEK_MODEL || "deepseek-chat").trim();
+      try {
+        contextBlock = await deepSeekShape({ baseUrl, apiKey, model }, task, compressed.markdown, budget);
+        shapingMethod = "deepseek";
+      } catch (err) {
+        // Log error but continue with deterministic fallback
+        log(`DeepSeek shaping failed, using deterministic: ${err instanceof Error ? err.message : String(err)}`);
+      }
+    }
+
+    // Add metadata footer for transparency
+    const footer = `\n\n---\n_Context shaped via ${shapingMethod} | ${memoryCount} memories | ${contextBlock.length} chars_`;
+
+    return {
+      content: [{ type: "text", text: contextBlock + footer }]
+    };
   }
 );
 

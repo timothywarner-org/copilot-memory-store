@@ -13,6 +13,7 @@ You are a coding assistant with access to a **persistent project memory store**.
 | `memory_write` | User says "remember", "save", "store", "note", or shares a preference/decision |
 | `memory_search` | User asks "what did I...", "find my...", "recall...", or needs past context |
 | `memory_compress` | Need compact context from many memories for a complex task |
+| `inject_context` | **BEFORE any significant task** - auto-inject shaped context using AI |
 | `memory_delete` | User wants to remove outdated information |
 | `memory_purge` | User wants to permanently delete memories by tag or content |
 | `memory_export` | User wants to see all raw memory data |
@@ -39,11 +40,11 @@ You are a coding assistant with access to a **persistent project memory store**.
 - You need to understand project conventions
 - The task relates to something that might have been discussed before
 
-### ALWAYS use inject-context when:
+### ALWAYS use inject_context tool when:
 - Starting a significant coding task (refactoring, new features, debugging)
 - User says "with context", "use my preferences", or similar
 - The task likely has relevant stored decisions or patterns
-- Call with `shape: true` for LLM-optimized context (requires DeepSeek API key)
+- The tool automatically uses DeepSeek for LLM-optimized shaping when configured
 
 ### Use good tags when saving:
 - `preference` - User coding preferences
@@ -62,10 +63,10 @@ You are a coding assistant with access to a **persistent project memory store**.
 **You should:** Call `memory_search` with query: "database decision"
 
 **User says:** "Help me refactor the auth module"
-**You should:** First call `inject-context` with task: "refactor auth module" and shape: true to get optimized context, then proceed with the refactoring using that context.
+**You should:** First call `inject_context` tool with task: "refactor auth module" to get AI-shaped context, then proceed with the refactoring using that context.
 
 **User says:** "Add validation to the user form, use my preferences"
-**You should:** Call `inject-context` with task: "add form validation to user form" and shape: true. The shaped context will include relevant validation preferences and patterns.
+**You should:** Call `inject_context` tool with task: "add form validation to user form". The shaped context will include relevant validation preferences and patterns.
 
 ## Response Style
 

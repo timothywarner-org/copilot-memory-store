@@ -28,5 +28,56 @@
     "createdAt": "2025-12-14T00:00:00.000Z",
     "updatedAt": "2025-12-14T00:00:00.000Z",
     "deletedAt": null
+  },
+  {
+    "id": "m_20251215T131157297Z_89b040",
+    "text": "Always use TypeScript strict mode",
+    "tags": [
+      "preference",
+      "typescript"
+    ],
+    "keywords": [
+      "typescript",
+      "strict",
+      "mode"
+    ],
+    "createdAt": "2025-12-15T13:11:57.297Z",
+    "updatedAt": "2025-12-15T13:11:57.297Z",
+    "deletedAt": null
+  },
+  {
+    "id": "m_20251215T131214769Z_cb43aa",
+    "text": "We chose PostgreSQL for ACID compliance",
+    "tags": [
+      "decision",
+      "database"
+    ],
+    "keywords": [
+      "chose",
+      "postgresql",
+      "acid",
+      "compliance"
+    ],
+    "createdAt": "2025-12-15T13:12:14.769Z",
+    "updatedAt": "2025-12-15T13:12:14.769Z",
+    "deletedAt": null
+  },
+  {
+    "id": "m_20251215T133445037Z_91afff",
+    "text": "User wants to learn more about MCP and .NET.",
+    "tags": [
+      "dotnet",
+      "python"
+    ],
+    "keywords": [
+      "user",
+      "wants",
+      "learn",
+      "mcp",
+      "net"
+    ],
+    "createdAt": "2025-12-15T13:34:45.037Z",
+    "updatedAt": "2025-12-15T13:34:45.037Z",
+    "deletedAt": null
   }
 ]

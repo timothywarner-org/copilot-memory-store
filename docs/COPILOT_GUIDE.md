@@ -64,6 +64,7 @@ You can also reference tools directly with `#` prefix:
 | `memory_write` | Store information | "remember", "save", "store", "note" |
 | `memory_search` | Find information | "what", "find", "recall", "show" |
 | `memory_compress` | Get compact context | Need context for complex tasks |
+| `inject_context` | **Auto-inject shaped context** | Before any significant coding task |
 | `memory_delete` | Soft-delete | "forget", "remove" |
 | `memory_purge` | Permanently delete | Clean up old/wrong memories |
 | `memory_export` | Export all data | Backup or review all memories |

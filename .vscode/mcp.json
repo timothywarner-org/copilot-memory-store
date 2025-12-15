@@ -1,14 +1,21 @@
 {
-  "servers": {
-    "copilot-memory": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./dist/mcp-server.js"
-      ],
-      "env": {
-        "MEMORY_PATH": "project-memory.json"
-      }
-    }
-  }
+	"servers": {
+		"copilot-memory": {
+			"type": "stdio",
+			"command": "node",
+			"args": [
+				"./dist/mcp-server.js"
+			],
+			"env": {
+				"MEMORY_PATH": "project-memory.json"
+			}
+		},
+		"doist/todoist-ai": {
+			"type": "http",
+			"url": "https://ai.todoist.net/mcp",
+			"gallery": "https://api.mcp.github.com",
+			"version": "0.0.1-seed"
+		}
+	},
+	"inputs": []
 }
