@@ -1,0 +1,111 @@
+{
+  "description": "Seed data for a React developer's preferences and patterns",
+  "usage": "Copy to your MEMORY_PATH location: cp examples/scenarios/react-developer.json .copilot-memory.json",
+  "records": [
+    {
+      "id": "m_20241201T100000Z_react01",
+      "text": "Always use functional components with hooks, never class components",
+      "tags": ["preference", "react"],
+      "keywords": ["functional", "components", "hooks", "class", "react"],
+      "createdAt": "2024-12-01T10:00:00Z"
+    },
+    {
+      "id": "m_20241201T100100Z_react02",
+      "text": "Prefer useState for local state, useReducer for complex state logic, Zustand for global state",
+      "tags": ["preference", "react", "state"],
+      "keywords": ["useState", "useReducer", "zustand", "state", "global", "local"],
+      "createdAt": "2024-12-01T10:01:00Z"
+    },
+    {
+      "id": "m_20241201T100200Z_react03",
+      "text": "Component file structure: ComponentName/index.tsx, ComponentName.styles.ts, ComponentName.test.tsx",
+      "tags": ["pattern", "react", "structure"],
+      "keywords": ["component", "file", "structure", "index", "styles", "test"],
+      "createdAt": "2024-12-01T10:02:00Z"
+    },
+    {
+      "id": "m_20241201T100300Z_react04",
+      "text": "Use React Query (TanStack Query) for all server state, never store API responses in Redux/Zustand",
+      "tags": ["decision", "react", "api"],
+      "keywords": ["react", "query", "tanstack", "server", "state", "api", "redux"],
+      "createdAt": "2024-12-01T10:03:00Z"
+    },
+    {
+      "id": "m_20241201T100400Z_react05",
+      "text": "Custom hooks must start with 'use' prefix and be in hooks/ directory",
+      "tags": ["pattern", "react", "hooks"],
+      "keywords": ["custom", "hooks", "use", "prefix", "directory"],
+      "createdAt": "2024-12-01T10:04:00Z"
+    },
+    {
+      "id": "m_20241201T100500Z_ts01",
+      "text": "TypeScript strict mode always enabled, no 'any' types allowed except in rare documented cases",
+      "tags": ["preference", "typescript"],
+      "keywords": ["typescript", "strict", "any", "types", "mode"],
+      "createdAt": "2024-12-01T10:05:00Z"
+    },
+    {
+      "id": "m_20241201T100600Z_ts02",
+      "text": "Use type for object shapes, interface for things that can be extended/implemented",
+      "tags": ["preference", "typescript"],
+      "keywords": ["type", "interface", "object", "shapes", "extended"],
+      "createdAt": "2024-12-01T10:06:00Z"
+    },
+    {
+      "id": "m_20241201T100700Z_style01",
+      "text": "Use Tailwind CSS for styling, avoid custom CSS files unless absolutely necessary",
+      "tags": ["preference", "styling", "tailwind"],
+      "keywords": ["tailwind", "css", "styling", "custom", "utility"],
+      "createdAt": "2024-12-01T10:07:00Z"
+    },
+    {
+      "id": "m_20241201T100800Z_style02",
+      "text": "Component variants handled with cva (class-variance-authority) + Tailwind",
+      "tags": ["pattern", "styling", "tailwind"],
+      "keywords": ["cva", "class", "variance", "authority", "tailwind", "variants"],
+      "createdAt": "2024-12-01T10:08:00Z"
+    },
+    {
+      "id": "m_20241201T100900Z_test01",
+      "text": "Use Vitest for unit tests, React Testing Library for component tests, Playwright for E2E",
+      "tags": ["decision", "testing"],
+      "keywords": ["vitest", "react", "testing", "library", "playwright", "e2e", "unit"],
+      "createdAt": "2024-12-01T10:09:00Z"
+    },
+    {
+      "id": "m_20241201T101000Z_test02",
+      "text": "Test behavior not implementation - test what users see, not internal state",
+      "tags": ["preference", "testing"],
+      "keywords": ["test", "behavior", "implementation", "users", "state"],
+      "createdAt": "2024-12-01T10:10:00Z"
+    },
+    {
+      "id": "m_20241201T101100Z_form01",
+      "text": "Use React Hook Form + Zod for all forms - Zod schemas define both validation and TypeScript types",
+      "tags": ["decision", "forms", "validation"],
+      "keywords": ["react", "hook", "form", "zod", "validation", "schemas", "types"],
+      "createdAt": "2024-12-01T10:11:00Z"
+    },
+    {
+      "id": "m_20241201T101200Z_err01",
+      "text": "Error boundaries at route level and around critical components, use react-error-boundary package",
+      "tags": ["pattern", "react", "errors"],
+      "keywords": ["error", "boundaries", "route", "critical", "components", "react"],
+      "createdAt": "2024-12-01T10:12:00Z"
+    },
+    {
+      "id": "m_20241201T101300Z_code01",
+      "text": "Named exports only, never default exports (better for refactoring and tree-shaking)",
+      "tags": ["preference", "javascript"],
+      "keywords": ["named", "exports", "default", "refactoring", "tree", "shaking"],
+      "createdAt": "2024-12-01T10:13:00Z"
+    },
+    {
+      "id": "m_20241201T101400Z_code02",
+      "text": "Use 2-space indentation, no semicolons, single quotes for strings",
+      "tags": ["preference", "formatting"],
+      "keywords": ["indentation", "semicolons", "single", "quotes", "formatting"],
+      "createdAt": "2024-12-01T10:14:00Z"
+    }
+  ]
+}

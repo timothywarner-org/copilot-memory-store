@@ -14,6 +14,8 @@ A **local JSON memory store** for context engineering with GitHub Copilot and MC
 
 | Guide | When to read |
 |-------|--------------|
+| [examples/QUICKSTART.md](examples/QUICKSTART.md) | **Start here** - npm commands cheatsheet |
+| [examples/COPILOT_CHAT_EXAMPLES.md](examples/COPILOT_CHAT_EXAMPLES.md) | 50+ copy-paste prompts for Copilot Chat |
 | [docs/CONTEXT_MEMORY_TYPES.md](docs/CONTEXT_MEMORY_TYPES.md) | Deep dive into LLM memory types and how this project works |
 | [docs/CODE_WALKTHROUGH.md](docs/CODE_WALKTHROUGH.md) | Architectural overview with flow diagrams |
 | [docs/CLI_GUIDE.md](docs/CLI_GUIDE.md) | Interactive REPL command reference |
@@ -151,13 +153,48 @@ After any configuration changes, reload VS Code:
 
 ### Prompts (3)
 
-> **Note:** VS Code GitHub Copilot does not currently support MCP prompts. Use the MCP Inspector or other MCP clients to test prompts.
+> **Note:** VS Code GitHub Copilot does not currently support MCP prompts.
+> Use the MCP Inspector or other MCP clients to test prompts.
 
 | Prompt | Description |
 |--------|-------------|
 | `summarize-memories` | Generate a summary of memories on a topic |
 | `remember-decision` | Structured template for architectural decisions |
 | `inject-context` | Auto-inject relevant memories as context for a task |
+
+### Context Shaping with DeepSeek
+
+The `inject-context` prompt supports **LLM-powered context shaping** via DeepSeek:
+
+```json
+{
+  "task": "refactor the auth module",
+  "budget": 1500,
+  "shape": true
+}
+```
+
+When `shape: true`:
+
+- Raw memories are transformed into **task-specific actionable guidance**
+- Output is structured with clear headers (`## Context for:`, `### Key Constraints`)
+- Irrelevant memories are filtered out
+- Falls back to deterministic compression if DeepSeek isn't configured
+
+This makes context injection more intuitive - instead of raw memory dumps,
+you get focused guidance like:
+
+```markdown
+## Context for: Auth Module Refactor
+
+### Preferences
+- Use JWT tokens (15min access, 7 day refresh)
+- Passwords hashed with bcrypt, cost factor 12
+
+### Key Constraints
+- Three-layer architecture: Controller → Service → Repository
+- All validation via Zod at API boundary
+```
 
 ## Configuration
 
@@ -222,6 +259,10 @@ The `memory_compress` tool demonstrates key context engineering concepts:
 .github/
 ├── agents/
 │   └── memory-agent.agent.md  # Custom VS Code agent definition
+├── prompts/                   # Reusable Copilot prompt files
+│   ├── add-memory.prompt.md
+│   ├── retrieve-memory.prompt.md
+│   └── inject-memory.prompt.md
 └── copilot-instructions.md    # Onboarding for AI coding agents
 .vscode/
 ├── launch.json
@@ -231,11 +272,18 @@ docs/
 ├── CODE_WALKTHROUGH.md   # Architecture walkthrough + diagrams
 ├── CLI_GUIDE.md          # CLI usage guide
 └── COPILOT_GUIDE.md      # VS Code Copilot usage guide
+examples/
+├── QUICKSTART.md         # npm commands cheatsheet
+├── COPILOT_CHAT_EXAMPLES.md  # 50+ prompt examples
+└── scenarios/            # Pre-built memory files for workshops
+    ├── react-developer.json
+    ├── api-backend.json
+    └── team-decisions.json
 src/
 ├── cli.ts                # Interactive REPL
 ├── mcp-server.ts         # MCP stdio server (tools, resources, prompts)
 ├── memoryStore.ts        # Core storage, search, compression
-└── deepseek.ts           # Optional LLM compression
+└── deepseek.ts           # Optional LLM compression + context shaping
 ```
 
 ## npm Scripts

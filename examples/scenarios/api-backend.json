@@ -1,0 +1,118 @@
+{
+  "description": "Seed data for API/backend development patterns and decisions",
+  "usage": "Copy to your MEMORY_PATH location: cp examples/scenarios/api-backend.json .copilot-memory.json",
+  "records": [
+    {
+      "id": "m_20241201T110000Z_api01",
+      "text": "All API endpoints follow REST conventions: GET for read, POST for create, PUT for full update, PATCH for partial, DELETE for remove",
+      "tags": ["pattern", "api", "rest"],
+      "keywords": ["api", "endpoints", "rest", "get", "post", "put", "patch", "delete"],
+      "createdAt": "2024-12-01T11:00:00Z"
+    },
+    {
+      "id": "m_20241201T110100Z_api02",
+      "text": "API versioning via URL path: /api/v1/, /api/v2/ - never headers or query params",
+      "tags": ["decision", "api", "versioning"],
+      "keywords": ["api", "versioning", "url", "path", "headers", "query"],
+      "createdAt": "2024-12-01T11:01:00Z"
+    },
+    {
+      "id": "m_20241201T110200Z_api03",
+      "text": "Response format: { data: T | null, meta?: { page, total }, errors?: AppError[] }",
+      "tags": ["pattern", "api", "response"],
+      "keywords": ["response", "format", "data", "meta", "errors", "page", "total"],
+      "createdAt": "2024-12-01T11:02:00Z"
+    },
+    {
+      "id": "m_20241201T110300Z_api04",
+      "text": "Error responses follow RFC 7807 Problem Details: { type, title, status, detail, instance }",
+      "tags": ["decision", "api", "errors"],
+      "keywords": ["error", "rfc", "7807", "problem", "details", "type", "title", "status"],
+      "createdAt": "2024-12-01T11:03:00Z"
+    },
+    {
+      "id": "m_20241201T110400Z_db01",
+      "text": "PostgreSQL for primary database - chosen for ACID compliance, complex queries, and JSON support",
+      "tags": ["decision", "database", "postgresql"],
+      "keywords": ["postgresql", "database", "acid", "compliance", "queries", "json"],
+      "createdAt": "2024-12-01T11:04:00Z"
+    },
+    {
+      "id": "m_20241201T110500Z_db02",
+      "text": "Use Prisma ORM - provides type-safe queries, migrations, and schema management",
+      "tags": ["decision", "database", "orm"],
+      "keywords": ["prisma", "orm", "type", "safe", "queries", "migrations", "schema"],
+      "createdAt": "2024-12-01T11:05:00Z"
+    },
+    {
+      "id": "m_20241201T110600Z_db03",
+      "text": "Database naming: snake_case for tables and columns, plural table names (users, orders)",
+      "tags": ["pattern", "database", "naming"],
+      "keywords": ["database", "naming", "snake", "case", "tables", "columns", "plural"],
+      "createdAt": "2024-12-01T11:06:00Z"
+    },
+    {
+      "id": "m_20241201T110700Z_auth01",
+      "text": "JWT tokens for authentication - access token (15min) + refresh token (7 days)",
+      "tags": ["decision", "auth", "jwt"],
+      "keywords": ["jwt", "tokens", "authentication", "access", "refresh", "token"],
+      "createdAt": "2024-12-01T11:07:00Z"
+    },
+    {
+      "id": "m_20241201T110800Z_auth02",
+      "text": "Passwords hashed with bcrypt, cost factor 12",
+      "tags": ["decision", "auth", "security"],
+      "keywords": ["passwords", "hashed", "bcrypt", "cost", "factor", "security"],
+      "createdAt": "2024-12-01T11:08:00Z"
+    },
+    {
+      "id": "m_20241201T110900Z_valid01",
+      "text": "Use Zod for all input validation - validate at API boundary, trust internal calls",
+      "tags": ["decision", "validation", "zod"],
+      "keywords": ["zod", "validation", "input", "api", "boundary", "internal"],
+      "createdAt": "2024-12-01T11:09:00Z"
+    },
+    {
+      "id": "m_20241201T111000Z_arch01",
+      "text": "Three-layer architecture: Controllers (HTTP) → Services (business logic) → Repositories (data access)",
+      "tags": ["pattern", "architecture"],
+      "keywords": ["three", "layer", "architecture", "controllers", "services", "repositories"],
+      "createdAt": "2024-12-01T11:10:00Z"
+    },
+    {
+      "id": "m_20241201T111100Z_arch02",
+      "text": "Repository pattern for all database access - no direct Prisma calls in services",
+      "tags": ["pattern", "architecture", "repository"],
+      "keywords": ["repository", "pattern", "database", "prisma", "services"],
+      "createdAt": "2024-12-01T11:11:00Z"
+    },
+    {
+      "id": "m_20241201T111200Z_log01",
+      "text": "Structured JSON logging with pino - include correlationId in all logs for request tracing",
+      "tags": ["pattern", "logging"],
+      "keywords": ["structured", "json", "logging", "pino", "correlationId", "tracing"],
+      "createdAt": "2024-12-01T11:12:00Z"
+    },
+    {
+      "id": "m_20241201T111300Z_log02",
+      "text": "Log levels: error (failures), warn (recoverable issues), info (business events), debug (dev only)",
+      "tags": ["pattern", "logging"],
+      "keywords": ["log", "levels", "error", "warn", "info", "debug"],
+      "createdAt": "2024-12-01T11:13:00Z"
+    },
+    {
+      "id": "m_20241201T111400Z_test01",
+      "text": "Integration tests use testcontainers for real PostgreSQL - no mocking database",
+      "tags": ["decision", "testing"],
+      "keywords": ["integration", "tests", "testcontainers", "postgresql", "mocking", "database"],
+      "createdAt": "2024-12-01T11:14:00Z"
+    },
+    {
+      "id": "m_20241201T111500Z_env01",
+      "text": "Environment config via dotenv + zod schema validation - fail fast on missing/invalid config",
+      "tags": ["pattern", "config"],
+      "keywords": ["environment", "config", "dotenv", "zod", "schema", "validation"],
+      "createdAt": "2024-12-01T11:15:00Z"
+    }
+  ]
+}

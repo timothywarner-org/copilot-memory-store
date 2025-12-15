@@ -98,3 +98,89 @@ export async function deepSeekCompress(cfg: DeepSeekConfig, query: string, markd
   if (typeof content !== "string") throw new Error("DeepSeek response missing content.");
   return content.length > budgetChars ? content.slice(0, budgetChars) : content;
 }
+
+/**
+ * Shapes memory context for a specific task using DeepSeek LLM.
+ *
+ * Unlike basic compression, shaping intelligently restructures the context
+ * to be most useful for the given task. It extracts relevant decisions,
+ * preferences, patterns, and constraints, then formats them as actionable
+ * guidance for a coding assistant.
+ *
+ * @param cfg - DeepSeek API configuration
+ * @param task - The specific task the user needs help with
+ * @param markdownContext - Pre-filtered markdown from deterministic compression
+ * @param budgetChars - Maximum character limit for output
+ * @returns Task-optimized markdown context string
+ * @throws Error if API request fails or response is malformed
+ *
+ * @example
+ * ```typescript
+ * const shaped = await deepSeekShape(
+ *   { baseUrl: "https://api.deepseek.com", apiKey: "sk-...", model: "deepseek-chat" },
+ *   "refactor the auth module to use JWT",
+ *   "# Context\n- Use TypeScript strict mode\n- Prefer functional patterns...",
+ *   1000
+ * );
+ * ```
+ */
+export async function deepSeekShape(
+  cfg: DeepSeekConfig,
+  task: string,
+  markdownContext: string,
+  budgetChars: number
+): Promise<string> {
+  const url = cfg.baseUrl.replace(/\/$/, "") + "/chat/completions";
+
+  const system = `You transform raw memory context into actionable guidance for a coding assistant about to work on a specific task.
+
+Your output MUST:
+1. Be valid Markdown with clear section headers
+2. Extract and highlight decisions, preferences, and constraints relevant to the task
+3. Omit anything unrelated to the task
+4. Use bullet points for quick scanning
+5. Start with "## Context for: {task summary}" header
+6. Include a "### Key Constraints" section if any apply
+7. Stay under ${budgetChars} characters (hard limit)
+8. Never include secrets, API keys, or sensitive data
+
+Format preference:
+- Brief, actionable statements
+- Code conventions as inline code (\`like this\`)
+- Group related items together`;
+
+  const userPrompt = `Task: ${task}
+
+Raw memories:
+${markdownContext}
+
+Transform these memories into focused guidance for the task above. Only include what's directly relevant.`;
+
+  const body = {
+    model: cfg.model,
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: userPrompt }
+    ],
+    temperature: 0.3
+  };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${cfg.apiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`DeepSeek API error (${res.status}): ${text}`);
+  }
+
+  const data: any = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (typeof content !== "string") throw new Error("DeepSeek response missing content.");
+  return content.length > budgetChars ? content.slice(0, budgetChars) : content;
+}

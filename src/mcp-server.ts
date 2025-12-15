@@ -19,7 +19,7 @@
  * ## Prompts (3)
  * - summarize-memories: Generate topic summary
  * - remember-decision: Structured ADR template
- * - inject-context: Auto-inject context for task
+ * - inject-context: Auto-inject context for task (supports LLM shaping)
  *
  * @module mcp-server
  */
@@ -30,7 +30,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { addMemory, compressDeterministic, computeStats, exportJson, formatSearchResults, loadStore, purge, search, softDeleteById } from "./memoryStore.js";
-import { deepSeekCompress } from "./deepseek.js";
+import { deepSeekCompress, deepSeekShape } from "./deepseek.js";
 
 /**
  * Logs a message to stderr (stdout is reserved for JSON-RPC).
@@ -344,21 +344,43 @@ server.prompt(
 /**
  * Prompt: inject-context
  * Auto-injects relevant memories as context for a task.
- * Uses deterministic compression to fit within budget.
+ * Supports optional LLM-powered shaping via DeepSeek for better task alignment.
+ *
+ * When `shape: true`, uses DeepSeek to intelligently restructure the context
+ * into actionable guidance specifically tailored for the task.
  */
 server.prompt(
   "inject-context",
-  "Inject relevant memories as context for a task",
+  "Inject relevant memories as context for a task. Use shape=true for LLM-optimized context.",
   {
     task: z.string().describe("The task you need help with"),
-    budget: z.number().optional().describe("Character budget for context (default 1200)")
+    budget: z.number().optional().describe("Character budget for context (default 1200)"),
+    shape: z.boolean().optional().describe("Use DeepSeek to shape context for the task (default false)")
   },
   async (args) => {
     const task = String(args.task ?? "").trim();
     const budget = Number.isFinite(args.budget) ? Number(args.budget) : 1200;
+    const shape = Boolean(args.shape);
 
     const loaded = loadStore();
     const compressed = compressDeterministic({ records: loaded.records, query: task, budget, limit: 25 });
+
+    let contextBlock = compressed.markdown;
+
+    // If shaping is requested and DeepSeek is configured, transform the context
+    if (shape) {
+      const key = (process.env.DEEPSEEK_API_KEY || "").trim();
+      if (key) {
+        const baseUrl = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").trim();
+        const model = (process.env.DEEPSEEK_MODEL || "deepseek-chat").trim();
+        try {
+          contextBlock = await deepSeekShape({ baseUrl, apiKey: key, model }, task, compressed.markdown, budget);
+        } catch (err) {
+          // Fall back to deterministic compression on error
+          log(`DeepSeek shaping failed, using deterministic: ${err}`);
+        }
+      }
+    }
 
     return {
       messages: [
@@ -366,7 +388,7 @@ server.prompt(
           role: "user",
           content: {
             type: "text",
-            text: `${compressed.markdown}\n---\n\nUsing the context above, help me with: ${task}`
+            text: `${contextBlock}\n\n---\n\nUsing the context above, help me with: ${task}`
           }
         }
       ]

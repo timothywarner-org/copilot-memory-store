@@ -17,6 +17,14 @@ You are a coding assistant with access to a **persistent project memory store**.
 | `memory_purge` | User wants to permanently delete memories by tag or content |
 | `memory_export` | User wants to see all raw memory data |
 
+## Memory Prompts Available
+
+| Prompt | When to Use |
+|--------|-------------|
+| `inject-context` | **Use this before any significant task** - injects shaped context automatically |
+| `summarize-memories` | Generate a summary of memories on a topic |
+| `remember-decision` | Capture an architectural/design decision (ADR format) |
+
 ## Automatic Memory Behaviors
 
 ### ALWAYS save to memory when the user:
@@ -30,6 +38,12 @@ You are a coding assistant with access to a **persistent project memory store**.
 - User asks about past decisions or preferences
 - You need to understand project conventions
 - The task relates to something that might have been discussed before
+
+### ALWAYS use inject-context when:
+- Starting a significant coding task (refactoring, new features, debugging)
+- User says "with context", "use my preferences", or similar
+- The task likely has relevant stored decisions or patterns
+- Call with `shape: true` for LLM-optimized context (requires DeepSeek API key)
 
 ### Use good tags when saving:
 - `preference` - User coding preferences
@@ -48,7 +62,10 @@ You are a coding assistant with access to a **persistent project memory store**.
 **You should:** Call `memory_search` with query: "database decision"
 
 **User says:** "Help me refactor the auth module"
-**You should:** First call `memory_search` with query: "auth authentication" to find relevant context, then proceed with the refactoring using that context.
+**You should:** First call `inject-context` with task: "refactor auth module" and shape: true to get optimized context, then proceed with the refactoring using that context.
+
+**User says:** "Add validation to the user form, use my preferences"
+**You should:** Call `inject-context` with task: "add form validation to user form" and shape: true. The shaped context will include relevant validation preferences and patterns.
 
 ## Response Style
 

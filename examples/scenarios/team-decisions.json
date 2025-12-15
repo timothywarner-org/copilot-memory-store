@@ -1,0 +1,111 @@
+{
+  "description": "Seed data for team architecture decisions and project context (ADR-style)",
+  "usage": "Copy to your MEMORY_PATH location: cp examples/scenarios/team-decisions.json .copilot-memory.json",
+  "records": [
+    {
+      "id": "m_20241115T090000Z_adr01",
+      "text": "ADR-001: Monorepo structure using Turborepo. Context: multiple packages need to share code. Decision: single repo with packages/ directory. Consequences: shared tooling, atomic commits, but larger repo size.",
+      "tags": ["decision", "architecture", "adr"],
+      "keywords": ["adr", "monorepo", "turborepo", "packages", "shared", "atomic"],
+      "createdAt": "2024-11-15T09:00:00Z"
+    },
+    {
+      "id": "m_20241115T093000Z_adr02",
+      "text": "ADR-002: Event-driven architecture for order processing. Context: need async processing and audit trail. Decision: publish domain events to Kafka. Consequences: eventual consistency, but full traceability.",
+      "tags": ["decision", "architecture", "adr", "events"],
+      "keywords": ["adr", "event", "driven", "order", "kafka", "async", "audit"],
+      "createdAt": "2024-11-15T09:30:00Z"
+    },
+    {
+      "id": "m_20241115T100000Z_adr03",
+      "text": "ADR-003: CQRS for order queries. Context: complex reporting needs. Decision: separate read models optimized for queries. Consequences: data duplication, but better read performance.",
+      "tags": ["decision", "architecture", "adr", "cqrs"],
+      "keywords": ["adr", "cqrs", "order", "queries", "read", "models", "reporting"],
+      "createdAt": "2024-11-15T10:00:00Z"
+    },
+    {
+      "id": "m_20241120T140000Z_tech01",
+      "text": "Tech stack decided: Node.js 20 LTS, TypeScript 5.3, React 18, Next.js 14 (App Router)",
+      "tags": ["decision", "tech-stack"],
+      "keywords": ["node", "typescript", "react", "nextjs", "app", "router", "stack"],
+      "createdAt": "2024-11-20T14:00:00Z"
+    },
+    {
+      "id": "m_20241120T143000Z_tech02",
+      "text": "Hosting on AWS: ECS Fargate for services, RDS for PostgreSQL, ElastiCache for Redis, S3 for assets",
+      "tags": ["decision", "infrastructure", "aws"],
+      "keywords": ["aws", "ecs", "fargate", "rds", "postgresql", "elasticache", "redis", "s3"],
+      "createdAt": "2024-11-20T14:30:00Z"
+    },
+    {
+      "id": "m_20241122T110000Z_team01",
+      "text": "Team: 4 devs (2 senior, 2 mid), 1 QA, 1 PM. Timezone: PST. Standup: 9am daily.",
+      "tags": ["context", "team"],
+      "keywords": ["team", "devs", "senior", "mid", "qa", "pm", "timezone", "standup"],
+      "createdAt": "2024-11-22T11:00:00Z"
+    },
+    {
+      "id": "m_20241122T113000Z_team02",
+      "text": "Sprint cadence: 2 weeks. Planning Monday, retro every other Friday. Jira for tracking.",
+      "tags": ["context", "team", "process"],
+      "keywords": ["sprint", "planning", "retro", "jira", "tracking", "cadence"],
+      "createdAt": "2024-11-22T11:30:00Z"
+    },
+    {
+      "id": "m_20241125T090000Z_cicd01",
+      "text": "CI/CD: GitHub Actions. PRs require 1 approval + passing tests. Main branch auto-deploys to staging.",
+      "tags": ["decision", "cicd", "github"],
+      "keywords": ["ci", "cd", "github", "actions", "prs", "approval", "tests", "staging"],
+      "createdAt": "2024-11-25T09:00:00Z"
+    },
+    {
+      "id": "m_20241125T093000Z_cicd02",
+      "text": "Production deploys: manual trigger after QA sign-off. Blue-green deployment via AWS.",
+      "tags": ["decision", "cicd", "deployment"],
+      "keywords": ["production", "deploys", "manual", "qa", "blue", "green", "deployment"],
+      "createdAt": "2024-11-25T09:30:00Z"
+    },
+    {
+      "id": "m_20241128T100000Z_security01",
+      "text": "Security review required for: auth changes, payment handling, PII access, external API integrations",
+      "tags": ["context", "security", "process"],
+      "keywords": ["security", "review", "auth", "payment", "pii", "api", "integrations"],
+      "createdAt": "2024-11-28T10:00:00Z"
+    },
+    {
+      "id": "m_20241128T103000Z_security02",
+      "text": "Secrets management: AWS Secrets Manager for production, .env.local for dev (gitignored)",
+      "tags": ["decision", "security", "secrets"],
+      "keywords": ["secrets", "management", "aws", "secrets", "manager", "env", "local"],
+      "createdAt": "2024-11-28T10:30:00Z"
+    },
+    {
+      "id": "m_20241201T090000Z_migrate01",
+      "text": "Legacy migration: old system uses Oracle DB + Java Spring. Migrating incrementally via strangler fig pattern.",
+      "tags": ["context", "migration", "legacy"],
+      "keywords": ["legacy", "migration", "oracle", "java", "spring", "strangler", "fig"],
+      "createdAt": "2024-12-01T09:00:00Z"
+    },
+    {
+      "id": "m_20241201T093000Z_migrate02",
+      "text": "Migration phase 1 complete: user service migrated. Phase 2 in progress: order service. Phase 3 pending: payment.",
+      "tags": ["context", "migration", "status"],
+      "keywords": ["migration", "phase", "user", "service", "order", "payment", "status"],
+      "createdAt": "2024-12-01T09:30:00Z"
+    },
+    {
+      "id": "m_20241205T140000Z_perf01",
+      "text": "Performance SLOs: p99 latency < 200ms for API, p99 < 500ms for reports. Alert if exceeded for 5min.",
+      "tags": ["decision", "performance", "slo"],
+      "keywords": ["performance", "slo", "latency", "p99", "api", "reports", "alert"],
+      "createdAt": "2024-12-05T14:00:00Z"
+    },
+    {
+      "id": "m_20241210T110000Z_learned01",
+      "text": "Lesson learned: Redis connection pool exhaustion caused outage. Now use connection pooling with max 50 connections per service.",
+      "tags": ["learned", "redis", "incident"],
+      "keywords": ["lesson", "learned", "redis", "connection", "pool", "exhaustion", "outage"],
+      "createdAt": "2024-12-10T11:00:00Z"
+    }
+  ]
+}
