@@ -1,6 +1,6 @@
 {
   "name": "copilot-memory-store",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": false,
   "type": "module",
   "description": "Local JSON memory store with CLI + MCP server for GitHub Copilot / MCP clients.",
